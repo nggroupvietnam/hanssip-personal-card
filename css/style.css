@@ -407,7 +407,13 @@ h1, h2, h3 { font-weight: 800; letter-spacing: -0.02em; }
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
-  margin-bottom: 28px;
+}
+.dc-note {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+  min-height: 1.2em;
+  margin: 12px 0 28px;
 }
 .dc-btn {
   display: flex; align-items: center; justify-content: center; gap: 8px;

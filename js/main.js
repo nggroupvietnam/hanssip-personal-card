@@ -10,7 +10,6 @@
     zalo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     whatsapp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     email: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    wechat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8.7 12.7c-3.6 0-6.5-2.4-6.5-5.4s2.9-5.4 6.5-5.4 6.5 2.4 6.5 5.4c0 .97-.31 1.88-.84 2.67" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.3" cy="6.7" r=".55" fill="currentColor" stroke="none"/><circle cx="10.6" cy="6.7" r=".55" fill="currentColor" stroke="none"/><path d="M11.4 14.1c0-2.8 2.5-5.1 5.6-5.1s5.6 2.3 5.6 5.1-2.5 5.1-5.6 5.1c-.62 0-1.22-.09-1.77-.26l-2.43 1.31.68-2.2c-1.24-.94-2.04-2.31-2.04-3.96Z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14.7" cy="13.6" r=".5" fill="currentColor" stroke="none"/><circle cx="19" cy="13.6" r=".5" fill="currentColor" stroke="none"/></svg>',
     factory: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20V10l6 4v-4l6 4V8l6 4v8H2Z" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 20v-3M12 20v-3M18 20v-3" stroke-linecap="round"/></svg>',
     package: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8V7a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 7v10a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 17v-1" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.3 7 12 12l8.7-5M12 22V12" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     globe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z"/></svg>',
@@ -136,39 +135,9 @@
     ];
   }
 
-  // Direct-contact section swaps Call for WeChat. There's no public
-  // WeChat deep-link format (WeChat blocks add-by-link for spam
-  // reasons), so this copies the real phone number and points the
-  // visitor at WeChat's own "search by phone" Add Friends flow —
-  // using only real data already on file, nothing invented.
-  function directContactTargets() {
-    return [
-      { key: "wechat", label: "WeChat", icon: ICONS.wechat, href: "#", wechat: true },
-      { key: "zalo", label: "Zalo", icon: ICONS.zalo, href: B.contact.zaloUrl },
-      { key: "whatsapp", label: "WhatsApp", icon: ICONS.whatsapp, href: B.contact.whatsappUrl },
-      { key: "email", label: "Email", icon: ICONS.email, href: "mailto:" + B.contact.email },
-    ];
-  }
-
-  function handleWechatClick(e) {
-    e.preventDefault();
-    var note = document.getElementById("dcNote");
-    var message = "Phone number copied (" + B.contact.phoneDisplay + ") — search it in WeChat under Add Friends.";
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(B.contact.phoneE164).then(function () {
-        if (note) note.textContent = message;
-      }).catch(function () {
-        if (note) note.textContent = "Find me on WeChat by searching " + B.contact.phoneDisplay + " under Add Friends.";
-      });
-    } else if (note) {
-      note.textContent = "Find me on WeChat by searching " + B.contact.phoneDisplay + " under Add Friends.";
-    }
-  }
-
-  function renderPillRow(container, className, targets) {
-    (targets || contactTargets()).forEach(function (t) {
+  function renderPillRow(container, className) {
+    contactTargets().forEach(function (t) {
       var a = el("a", { href: t.href, class: className, target: t.key === "zalo" || t.key === "whatsapp" ? "_blank" : "_self", rel: "noopener" }, t.icon + "<span>" + t.label + "</span>");
-      if (t.wechat) a.addEventListener("click", handleWechatClick);
       container.appendChild(a);
     });
   }
@@ -176,7 +145,7 @@
   function hydrateContactRows() {
     renderPillRow(document.getElementById("heroContactRow"), "contact-pill");
     renderPillRow(document.getElementById("stickyBar"), "");
-    renderPillRow(document.getElementById("directContactRow"), "dc-btn", directContactTargets());
+    renderPillRow(document.getElementById("directContactRow"), "dc-btn");
   }
 
   /* ============================================================

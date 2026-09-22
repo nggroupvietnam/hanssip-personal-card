@@ -114,7 +114,7 @@ window.BUSINESS = {
     title: "Tran Phuong Lam | Industrial Land & Investment Solutions",
     description:
       "Helping manufacturers, investors and businesses find the right industrial land for their next project. Direct contact with HANSSIP Industrial Park's Director of Sales and International Relations.",
-    ogImage: "images/hero-industrial.jpg",
-    canonicalUrl: "", // [Placeholder] set to the final published URL
+    ogImage: "https://nggroupvietnam.github.io/hanssip-personal-card/images/profile.png",
+    canonicalUrl: "https://nggroupvietnam.github.io/hanssip-personal-card/",
   },
 };
